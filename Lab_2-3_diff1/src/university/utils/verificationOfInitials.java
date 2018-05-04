@@ -1,4 +1,4 @@
-package University.utils;
+package university.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;

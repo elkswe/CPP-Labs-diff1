@@ -1,9 +1,9 @@
-package University.view;
+package university.view;
 
-import University.controller.UniversityViewController;
-import University.model.SomeClass;
-import University.model.SomeStudent;
-import University.model.Teacher;
+import university.controller.UniversityViewController;
+import university.model.SomeClass;
+import university.model.SomeStudent;
+import university.model.Teacher;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;

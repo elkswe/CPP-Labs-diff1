@@ -1,8 +1,8 @@
-package University;
+package university;
 
-import University.controller.UniversityViewController;
-import University.model.University;
-import University.view.UniversityView;
+import university.controller.UniversityViewController;
+import university.model.University;
+import university.view.UniversityView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

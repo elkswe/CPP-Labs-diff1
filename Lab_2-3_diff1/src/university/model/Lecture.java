@@ -1,4 +1,4 @@
-package University.model;
+package university.model;
 
 import java.util.List;
 import java.util.Objects;

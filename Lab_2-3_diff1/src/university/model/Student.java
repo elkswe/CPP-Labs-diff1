@@ -1,4 +1,4 @@
-package University.model;
+package university.model;
 
 import java.util.Comparator;
 import java.util.LinkedList;

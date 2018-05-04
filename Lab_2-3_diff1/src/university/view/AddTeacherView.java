@@ -1,6 +1,6 @@
-package University.view;
+package university.view;
 
-import University.controller.AddTeacherViewController;
+import university.controller.AddTeacherViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
