@@ -11,30 +11,64 @@ public class Teacher {
     private String firstName;
     private String middleName;
 
-    private ObservableList<SomeStudent> missingStudentsList = FXCollections.observableArrayList();
+    private Journal journal;
+
+    private ObservableList<SomeStudent> missingStudentsList
+            = FXCollections.observableArrayList();
 
     public Teacher() {
-        this("КПП", "Бузюма", "Алексей", "Леонидович");
+        this("КПП",
+                "Искра",
+                "Наталья",
+                "Александровна");
     }
 
-    public Teacher(String subject, String secondName, String firstName, String middleName) {
+    public Teacher(String subject,
+                   String secondName,
+                   String firstName,
+                   String middleName) {
         this.subject = subject;
         this.secondName = secondName;
         this.firstName = firstName;
         this.middleName = middleName;
     }
 
+    public Teacher(String subject,
+                   String secondName,
+                   String firstName,
+                   String middleName,
+                   Journal journal) {
+        this(subject, secondName, firstName, middleName);
+        this.journal = journal;
+    }
+
     public void markMissingStudents(ObservableList<SomeStudent> studentsList) {
+        ObservableList<Praepostor> praepostors
+                = FXCollections.observableArrayList();
         missingStudentsList.clear();
         for (SomeStudent someStudent :
                 studentsList) {
             Student student = (Student) someStudent;
-            if (!student.isGiveClass()) {
+            if (!student.isAttendClass()) {
                 missingStudentsList.add(student);
+            }
+            if (someStudent instanceof Praepostor) {
+                praepostors.add((Praepostor) someStudent);
+            }
+        }
+        for (Praepostor praepostor
+                : praepostors) {
+            for (SomeStudent someStudent
+                    : missingStudentsList) {
+                Student student = (Student) someStudent;
+                if (student.getGroup() == praepostor.getGroup()) {
+                    praepostor.finishMarking(student);
+                }
             }
         }
     }
 
+    //For debug
     public void showMissingStudents() {
         System.out.println(this.toString());
         for (SomeStudent someStudent :
@@ -42,6 +76,10 @@ public class Teacher {
             System.out.println(someStudent.toString());
         }
         System.out.println("\n===========================================\n");
+    }
+
+    public void setJournal(Journal journal) {
+        this.journal = journal;
     }
 
     public String getSubject() {
@@ -77,13 +115,14 @@ public class Teacher {
                 Objects.equals(secondName, teacher.secondName) &&
                 Objects.equals(firstName, teacher.firstName) &&
                 Objects.equals(middleName, teacher.middleName) &&
+                Objects.equals(journal, teacher.journal) &&
                 Objects.equals(missingStudentsList, teacher.missingStudentsList);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(subject, secondName, firstName, middleName, missingStudentsList);
+        return Objects.hash(subject, secondName, firstName, middleName, journal, missingStudentsList);
     }
 
     @Override

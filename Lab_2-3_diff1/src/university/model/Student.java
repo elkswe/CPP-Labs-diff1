@@ -36,10 +36,6 @@ public class Student extends SomeStudent {
         }
     }
 
-    public boolean isGiveClass() {
-        return attendClass;
-    }
-
     public void attendOrNot() {
         attendClass = CHANCE_TO_ATTEND < Math.random();
     }

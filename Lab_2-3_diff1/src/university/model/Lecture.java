@@ -1,14 +1,19 @@
 package university.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 import java.util.Objects;
 
 public class Lecture extends SomeClass {
-    private static final int LECTURE_IS_GIVE = 1;
-    private static final int LECTURE_IS_REPEATED = 2;
+    public static final int LECTURE_IS_GIVE = 1;
+    public  static final int LECTURE_IS_REPEATED = 2;
 
     private String theme;
     private int isGive = 0;
+
+    private ObservableList<SomeStudent> missingStudentsList = FXCollections.observableArrayList();
 
     public Lecture(String theme) {
         super();
@@ -36,6 +41,20 @@ public class Lecture extends SomeClass {
         if (isGive != LECTURE_IS_REPEATED) ++isGive;
     }
 
+    /**
+     * @param studentsList
+     */
+    public void fillMissingStudents(final ObservableList<SomeStudent> studentsList) {
+        missingStudentsList.clear();
+        for (SomeStudent someStudent
+                : studentsList) {
+            Student student = (Student) someStudent;
+            if (!student.isAttendClass()) {
+                missingStudentsList.add(student);
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,9 +80,13 @@ public class Lecture extends SomeClass {
         for (SomeStudent someStudent :
                 students) {
             Student student = (Student) someStudent;
-            if (student.isGiveClass()) {
+            if (student.isAttendClass()) {
                 student.getKnowledge(this.subject);
             }
         }
+    }
+
+    public ObservableList<SomeStudent> getMissingStudentsList() {
+        return missingStudentsList;
     }
 }

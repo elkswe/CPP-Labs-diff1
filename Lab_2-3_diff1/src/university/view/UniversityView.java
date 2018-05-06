@@ -1,9 +1,5 @@
 package university.view;
 
-import university.controller.UniversityViewController;
-import university.model.SomeClass;
-import university.model.SomeStudent;
-import university.model.Teacher;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -13,6 +9,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import university.controller.UniversityViewController;
+import university.model.SomeClass;
+import university.model.SomeStudent;
+import university.model.Teacher;
 
 public final class UniversityView {
     public static final double WINDOW_MIN_HEIGHT = 600;
@@ -34,6 +34,7 @@ public final class UniversityView {
     private static final Button praepostorMarkStudentsBtn;
     private static final Button teacherMarkStudentsBtn;
     private static final TextArea studentDataView;
+    private static final Button journalBtn;
 
     static {
         studentsListView = new ListView<>();
@@ -46,6 +47,7 @@ public final class UniversityView {
         praepostorMarkStudentsBtn = new Button("Старосты -> Отметить");
         teacherMarkStudentsBtn = new Button("Преподаватель -> Отметить");
         studentDataView = new TextArea();
+        journalBtn = new Button("Журнал");
     }
 
     private UniversityView() {
@@ -55,12 +57,15 @@ public final class UniversityView {
     public static VBox getView() {
         praepostorMarkStudentsBtn.setFont(new Font(14));
         praepostorMarkStudentsBtn.setMinHeight(BUTTON_MIN_HEIGHT);
+        journalBtn.setFont(new Font(14));
+        journalBtn.setMinHeight(BUTTON_MIN_HEIGHT);
         VBox studentsViewBox = new VBox(
                 new Label("Студенты"),
                 studentsListView,
                 addStudentBtn,
                 new Separator(Orientation.HORIZONTAL),
-                praepostorMarkStudentsBtn
+                praepostorMarkStudentsBtn,
+                journalBtn
         );
         configureViewBox(studentsViewBox);
 
@@ -144,5 +149,6 @@ public final class UniversityView {
         controller.setPraepostorMarkStudents(praepostorMarkStudentsBtn);
         controller.setTeacherMarkStudentsBtn(teacherMarkStudentsBtn);
         controller.setStudentDataView(studentDataView);
+        controller.setJournalBtn(journalBtn);
     }
 }

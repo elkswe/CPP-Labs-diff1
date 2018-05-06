@@ -1,6 +1,5 @@
 package university.view;
 
-import university.controller.AddTeacherViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -12,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import university.controller.AddTeacherViewController;
 
 public final class AddTeacherView {
     private static final double DEFAULT_SPACING = 15;

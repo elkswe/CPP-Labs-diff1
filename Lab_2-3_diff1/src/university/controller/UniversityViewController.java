@@ -1,6 +1,5 @@
 package university.controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -14,117 +13,74 @@ import javafx.stage.Stage;
 import university.model.*;
 import university.view.AddStudentView;
 import university.view.AddTeacherView;
+import university.view.JournalView;
 
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Create main view for application.
- */
+import static university.model.Lecture.LECTURE_IS_REPEATED;
+
+/** Create main view for application. */
 public class UniversityViewController {
-    /**
-     * Constant part of Button "Прочитать лекцию".
-     */
+    /** Constant part of Button "Прочитать лекцию". */
     private static final String DEFAULT_GIVE_LECTURE_BTN_TEXT = "Прочитать лекцию по ";
 
-    /**
-     * ListView for showing list of students.
-     */
+    /** ListView for showing list of students. */
     private ListView<SomeStudent> studentsListView;
-    /**
-     * Button showing dialog window for adding student.
-     */
+    /** Button showing dialog window for adding student. */
     private Button addStudentBtn;
-    /**
-     * ListView for showing list of classes.
-     */
+    /** ListView for showing list of classes. */
     private ListView<SomeClass> classesListView;
-    /**
-     * Button creating schedule.
-     */
+    /** Button creating schedule. */
     private Button makeScheduleBtn;
-    /**
-     * ListView for showing list of teachers.
-     */
+    /** ListView for showing list of teachers. */
     private ListView<Teacher> teachersListView;
-    /**
-     * Button showing dialog window for adding teacher.
-     */
+    /** Button showing dialog window for adding teacher. */
     private Button hireTeacherBtn;
-    /**
-     * Perform all actions for the lecture.
-     */
+    /** Perform all actions for the lecture. */
     private Button giveLectureBtn;
-    /**
-     * Says the praepostors to note their students.
-     */
+    /** Says the praepostors to note their students. */
     private Button praepostorMarkStudents;
-    /**
-     * .
-     */
+    /** . */
     private Button teacherMarkStudentsBtn;
-    /**
-     * .
-     */
+    /** . */
     private TextArea studentDataView;
+    /** . */
+    private Button journalBtn;
 
-    /**
-     * .
-     */
+    /** . */
     private ObservableList<SomeStudent> studentsList;
-    /**
-     * .
-     */
+    /** . */
     private ObservableList<SomeClass> classesList;
-    /**
-     * .
-     */
+    /** . */
     private ObservableList<Teacher> teachersList;
 
-    /**
-     * .
-     */
-    private ObservableList<SomeStudent> missingStudentsList = FXCollections.observableArrayList();
-
-    /**
-     * .
-     */
+    /** . */
     private University university;
 
-    /**
-     * .
-     */
+    /** Link to main Journal. */
+    private Journal journal;
+
+    /** . */
     private Stage primaryStage;
 
-    /**
-     * .
-     */
+    /** . */
     private SomeStudent tempStudent;
-    /**
-     * .
-     */
+    /** . */
     private Teacher tempTeacher;
 
-    /**
-     * .
-     */
+    /** . */
     private int currentLectureNumber = 0;
-    /**
-     * .
-     */
+    /** . */
     private int lastCurrentLectureNumber = 0;
 
-    /**
-     * .
-     */
+    /** . */
     public UniversityViewController() {
         tempStudent = null;
         tempTeacher = null;
     }
 
-    /**
-     * .
-     */
+    /** . */
     public void initialize() {
         studentsListView.setItems(studentsList);
         classesListView.setItems(classesList);
@@ -133,15 +89,28 @@ public class UniversityViewController {
         studentsList.addAll(
                 new Student(650503, "Ананько", "Егор", "Эдуардович"),
                 new Student(650503, "Резниченко", "Светлана", "Андреевна"),
-                new Praepostor(650503, "Кушнеренко", "Роман", "Александрович"),
-                new Student(650504, "Буслов", "Алексей", "Валерьевич"));
+                new Praepostor(650503, "Кушнеренко", "Роман", "Александрович", journal),
+                new Student(650504, "Буслов", "Алексей", "Валерьевич"),
+                new Praepostor(650504, "Климова", "Дана", "Вячеславовна", journal),
+                new Student(650501, "Ананькоо", "Егорр", "Эдуардовичч"),
+                new Student(650501, "Резниченкоо", "Светлана", "Андреевна"),
+                new Praepostor(650501, "Кушнеренкоо", "Роман", "Александрович", journal),
+                new Student(650502, "Целогузз", "Дмитрий", "Сергеевич"),
+                new Student(650502, "Бусловв", "Алексей", "Валерьевич"),
+                new Praepostor(650502, "Климоваа", "Дана", "Вячеславовна", journal),
+                new Student(650505, "Ананькооо", "Егор", "Эдуардович"),
+                new Student(650505, "Резниченкооо", "Светлана", "Андреевна"),
+                new Praepostor(650505, "Кушнеренкооо", "Роман", "Александрович", journal),
+                new Student(650506, "Целогуззз", "Дмитрий", "Сергеевич"),
+                new Student(650506, "Бусловвв", "Алексей", "Валерьевич"),
+                new Praepostor(650506, "Климовааа", "Дана", "Вячеславовна", journal));
         studentsList.sort(Comparator.comparing(SomeStudent::toString));
 
         teachersList.addAll(
-                new Teacher("КПП", "Искра", "Наталья", "Александровна"),
-                new Teacher("АПК", "Прытков", "Валерий", "Александрович"),
-                new Teacher("СхемТ", "Байрак", "Сергей", "Анатольевич"),
-                new Teacher("СПОВМ", "Фролов", "Игорь", "Иванович"));
+                new Teacher("КПП", "Искра", "Наталья", "Александровна", journal),
+                new Teacher("АПК", "Прытков", "Валерий", "Александрович", journal),
+                new Teacher("СхемТ", "Байрак", "Сергей", "Анатольевич", journal),
+                new Teacher("СПОВМ", "Фролов", "Игорь", "Иванович", journal));
         teachersList.sort(Comparator.comparing(Teacher::toString));
 
         setMyCellFactory(studentsListView);
@@ -168,10 +137,27 @@ public class UniversityViewController {
             if (classesListView.getSelectionModel().getSelectedItem() != null) showClassesData(newValue);
             else studentDataView.clear();
         });
+        journalBtn.setOnAction(event -> showJournal());
+    }
+
+    /** . */
+    private void showJournal() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Журнал");
+        dialogStage.setScene(new Scene(JournalView.getView()));
+        dialogStage.setWidth(1000);
+        dialogStage.setHeight(700);
+
+        JournalViewController controller = new JournalViewController();
+        JournalView.initController(controller);
+        controller.setJournal(journal);
+        controller.initialize();
+
+        dialogStage.show();
     }
 
     /**
-     * .
+     * @param student
      */
     private void showStudentData(final SomeStudent student) {
         StringBuilder dataSB = new StringBuilder("Статус: ");
@@ -214,7 +200,7 @@ public class UniversityViewController {
     }
 
     /**
-     * .
+     * @param teacher
      */
     private void showTeacherData(final Teacher teacher) {
         StringBuilder dataSB = new StringBuilder("Предмет: ");
@@ -236,7 +222,7 @@ public class UniversityViewController {
     }
 
     /**
-     * .
+     * @param someClass
      */
     private void showClassesData(final SomeClass someClass) {
         Lecture lecture = (Lecture) someClass;
@@ -262,7 +248,8 @@ public class UniversityViewController {
     }
 
     /**
-     * .
+     * @param listView
+     * @param <T>
      */
     private <T> void setMyCellFactory(final ListView<T> listView) {
         listView.setCellFactory(param -> new ListCell<T>() {
@@ -278,61 +265,61 @@ public class UniversityViewController {
         });
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void addStudentWindow() {
         boolean okClicked = showStudentAddDialog();
         if (okClicked) {
+            if (tempStudent instanceof Praepostor) {
+                ((Praepostor) tempStudent).setJournal(journal);
+            }
             university.addStudent(tempStudent);
-            university.getStudentsList().sort(Comparator.comparing(SomeStudent::toString));
+            university.getStudentsList()
+                    .sort(Comparator.comparing(SomeStudent::toString));
         }
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void hireTeacherWindow() {
         boolean okClicked = showTeacherHireDialog();
         if (okClicked) {
+            tempTeacher.setJournal(journal);
             university.addTeacher(tempTeacher);
-            university.getTeachersList().sort(Comparator.comparing(Teacher::toString));
+            university.getTeachersList()
+                    .sort(Comparator.comparing(Teacher::toString));
         }
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void makeScheduleHandler() {
         university.generateSchedule();
-        giveLectureBtn.setText(DEFAULT_GIVE_LECTURE_BTN_TEXT + classesList.get(0).getSubject());
+        giveLectureBtn.setText(DEFAULT_GIVE_LECTURE_BTN_TEXT
+                + classesList.get(0).getSubject());
         giveLectureBtn.setDisable(false);
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void giveLecture() {
         fillTheAudience();
-        fillMissingStudents();
-        classesList.get(currentLectureNumber).getTeacher().attendLecture((Lecture) classesList.get(currentLectureNumber));
-        if (((Lecture) classesList.get(currentLectureNumber)).isGive()) {
-            ((Lecture) classesList.get(currentLectureNumber)).giveKnowledge(studentsList);
+        Lecture lecture = (Lecture) classesList.get(currentLectureNumber);
+        lecture.fillMissingStudents(studentsList);
+        lecture.getTeacher().attendLecture(lecture);
+        if (lecture.isGive()) {
+            lecture.giveKnowledge(studentsList);
         }
         //debug
         for (SomeStudent someStudent
                 : studentsList) {
             Student student = (Student) someStudent;
-            System.out.println(student.isGiveClass());
+            System.out.println(student.isAttendClass());
             student.showMarks();
 
         }
         System.out.println("\n===========================================\n");
 
         for (SomeStudent someStudent
-                : missingStudentsList) {
+                : lecture.getMissingStudentsList()) {
             Student student = (Student) someStudent;
-            System.out.println(student.isGiveClass());
+            System.out.println(student.isAttendClass());
             System.out.println(student.toString());
         }
         System.out.println("\n===========================================\n");
@@ -345,46 +332,46 @@ public class UniversityViewController {
             makeScheduleBtn.setDisable(false);
             giveLectureBtn.setDisable(true);
         }
-        giveLectureBtn.setText(DEFAULT_GIVE_LECTURE_BTN_TEXT + classesList.get(currentLectureNumber).getSubject());
+        giveLectureBtn.setText(DEFAULT_GIVE_LECTURE_BTN_TEXT
+                + lecture.getSubject());
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void praepostorMarkStudentsBtnHandler() {
-        if (((Lecture) classesList.get(lastCurrentLectureNumber)).isGive()) {
+        Lecture lecture = (Lecture) classesList.get(lastCurrentLectureNumber);
+        if (lecture.isGive()) {
             for (SomeStudent someStudent
                     : studentsList) {
-                if (someStudent instanceof Praepostor && ((Praepostor) someStudent).isGiveClass()) {
+                if (someStudent instanceof Praepostor) {
                     Praepostor praepostor = (Praepostor) someStudent;
                     praepostor.markMissingStudents(studentsList);
                     //debug
-                    System.out.println();
                     praepostor.showMissingStudents();
-                    System.out.println();
                     //debug
                 }
             }
+            journal.showJournal();
+            System.out.println();
         }
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void teacherMarkStudentsBtnHandler() {
         if (((Lecture) classesList.get(lastCurrentLectureNumber)).isGive()) {
-            classesList.get(lastCurrentLectureNumber).getTeacher().markMissingStudents(studentsList);
+            classesList.get(lastCurrentLectureNumber)
+                    .getTeacher().markMissingStudents(studentsList);
             //debug
             System.out.println();
-            classesList.get(lastCurrentLectureNumber).getTeacher().showMissingStudents();
+            classesList.get(lastCurrentLectureNumber)
+                    .getTeacher().showMissingStudents();
             System.out.println();
             //debug
+            journal.showJournal();
+            System.out.println();
         }
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void fillTheAudience() {
         for (SomeStudent someStudent
                 : studentsList) {
@@ -393,23 +380,7 @@ public class UniversityViewController {
         }
     }
 
-    /**
-     * .
-     */
-    private void fillMissingStudents() {
-        missingStudentsList.clear();
-        for (SomeStudent someStudent
-                : studentsList) {
-            Student student = (Student) someStudent;
-            if (!student.isGiveClass()) {
-                missingStudentsList.add(student);
-            }
-        }
-    }
-
-    /**
-     * .
-     */
+    /** . */
     private boolean showStudentAddDialog() {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Зачислить студента");
@@ -430,9 +401,7 @@ public class UniversityViewController {
         return controller.isOkClicked();
     }
 
-    /**
-     * .
-     */
+    /** . */
     private boolean showTeacherHireDialog() {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Нанять преподавателя");
@@ -454,16 +423,15 @@ public class UniversityViewController {
     }
 
     /**
-     * .
+     * @param university
      */
     public void setUniversity(final University university) {
         this.university = university;
+        this.journal = university.getJournal();
         initLists();
     }
 
-    /**
-     * .
-     */
+    /** . */
     private void initLists() {
         studentsList = university.getStudentsList();
         classesList = university.getClassesList();
@@ -471,79 +439,86 @@ public class UniversityViewController {
     }
 
     /**
-     * .
+     * @param studentsListView
      */
     public void setStudentsListView(final ListView<SomeStudent> studentsListView) {
         this.studentsListView = studentsListView;
     }
 
     /**
-     * .
+     * @param addStudentBtn
      */
     public void setAddStudentBtn(final Button addStudentBtn) {
         this.addStudentBtn = addStudentBtn;
     }
 
     /**
-     * .
+     * @param classesListView
      */
     public void setClassesListView(final ListView<SomeClass> classesListView) {
         this.classesListView = classesListView;
     }
 
     /**
-     * .
+     * @param makeScheduleBtn
      */
     public void setMakeScheduleBtn(final Button makeScheduleBtn) {
         this.makeScheduleBtn = makeScheduleBtn;
     }
 
     /**
-     * .
+     * @param teachersListView
      */
     public void setTeachersListView(final ListView<Teacher> teachersListView) {
         this.teachersListView = teachersListView;
     }
 
     /**
-     * .
+     * @param hireTeacherBtn
      */
     public void setHireTeacherBtn(final Button hireTeacherBtn) {
         this.hireTeacherBtn = hireTeacherBtn;
     }
 
     /**
-     * .
+     * @param primaryStage
      */
     public void setPrimaryStage(final Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     /**
-     * .
+     * @param giveLectureBtn
      */
     public void setGiveLectureBtn(final Button giveLectureBtn) {
         this.giveLectureBtn = giveLectureBtn;
     }
 
     /**
-     * .
+     * @param praepostorMarkStudents
      */
     public void setPraepostorMarkStudents(final Button praepostorMarkStudents) {
         this.praepostorMarkStudents = praepostorMarkStudents;
     }
 
     /**
-     * .
+     * @param teacherMarkStudentsBtn
      */
     public void setTeacherMarkStudentsBtn(final Button teacherMarkStudentsBtn) {
         this.teacherMarkStudentsBtn = teacherMarkStudentsBtn;
     }
 
     /**
-     * .
+     * @param studentDataView
      */
     public void setStudentDataView(final TextArea studentDataView) {
         this.studentDataView = studentDataView;
+    }
+
+    /**
+     * @param journalBtn
+     */
+    public void setJournalBtn(final Button journalBtn) {
+        this.journalBtn = journalBtn;
     }
 }

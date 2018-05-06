@@ -12,9 +12,10 @@ public class University {
     private ObservableList<SomeStudent> studentsList = FXCollections.observableArrayList();
     private ObservableList<SomeClass> classesList = FXCollections.observableArrayList();
     private ObservableList<Teacher> teachersList = FXCollections.observableArrayList();
+    private Journal journal;
 
     public University() {
-
+        journal = new Journal();
     }
 
     public void addStudent(SomeStudent someStudent) {
@@ -48,6 +49,10 @@ public class University {
         return teachersList;
     }
 
+    public Journal getJournal() {
+        return journal;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,12 +60,13 @@ public class University {
         University that = (University) o;
         return Objects.equals(studentsList, that.studentsList) &&
                 Objects.equals(classesList, that.classesList) &&
-                Objects.equals(teachersList, that.teachersList);
+                Objects.equals(teachersList, that.teachersList) &&
+                Objects.equals(journal, that.journal);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(studentsList, classesList, teachersList);
+        return Objects.hash(studentsList, classesList, teachersList, journal);
     }
 }

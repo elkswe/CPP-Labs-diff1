@@ -8,60 +8,36 @@ import university.model.Teacher;
 
 import static university.utils.verificationOfInitials.verify;
 
-/**
- * Create view for adding student.
- */
+/** Create view for adding student. */
 public class AddTeacherViewController {
-    /**
-     * TextField for entering second name.
-     */
+    /** TextField for entering second name. */
     private TextField secondNameTextField;
-    /**
-     * TextField for entering first name.
-     */
+    /** TextField for entering first name. */
     private TextField firstNameTextField;
-    /**
-     * TextField for entering middle name.
-     */
+    /** TextField for entering middle name. */
     private TextField middleNameTextField;
-    /**
-     * ComboBox for choosing subject.
-     */
+    /** ComboBox for choosing subject. */
     private ComboBox<String> groupComboBox;
-    /**
-     * Button for confirm creating.
-     */
+    /** Button for confirm creating. */
     private Button okBtn;
-    /**
-     * Button for close dialog window.
-     */
+    /** Button for close dialog window. */
     private Button cancelBtn;
-    /**
-     * Created teacher.
-     */
+    /** Created teacher. */
     private Teacher teacher;
 
-    /**
-     * True, if OK button is clicked.
-     */
+    /** True, if OK button is clicked. */
     private boolean isOkClicked;
 
-    /**
-     * Stage for showing dialog window.
-     */
+    /** Stage for showing dialog window. */
     private Stage dialogStage;
 
-    /**
-     * Default constructor.
-     */
+    /** Default constructor. */
     public AddTeacherViewController() {
         teacher = null;
         isOkClicked = false;
     }
 
-    /**
-     * Initialize handlers.
-     */
+    /** Initialize handlers. */
     public void initialize() {
         okBtn.setOnAction(event -> handleOk());
         cancelBtn.setOnAction(event -> handleCancel());
@@ -169,16 +145,12 @@ public class AddTeacherViewController {
         this.dialogStage = dialogStage;
     }
 
-    /**
-     * @return Teacher - created teacher.
-     */
+    /** @return Teacher - created teacher. */
     public Teacher getTeacher() {
         return teacher;
     }
 
-    /**
-     * @return true - if Ok button is clicked.
-     */
+    /** @return true - if Ok button is clicked. */
     public boolean isOkClicked() {
         return isOkClicked;
     }
